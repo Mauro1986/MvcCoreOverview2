@@ -10,7 +10,7 @@ namespace MvcCoreOverview2.Models
     public class Authors
     {
         [Key]
-        public int Author_Id { get; set; }
+        public int? Author_Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }

@@ -47,5 +47,63 @@ namespace MvcCoreOverview2.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? Id)
+        {
+            if (Id == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var editAuthor = await _db.Authors.FindAsync(Id);
+
+            return View(editAuthor);
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Edit(Authors NewAuthors)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Authors.Update(NewAuthors);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(NewAuthors);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int? Id)
+        {
+            if (Id == null)
+            {
+                //return RedirectToAction(nameof(Index));
+                return NotFound();
+            }
+            var AuthorDetails = await _db.Authors.FindAsync(Id);
+            return View(AuthorDetails);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+            var AuthorDetails = await _db.Authors.FindAsync(Id);
+            return View(AuthorDetails);
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Delete(Authors author)
+        {
+            if (author.Author_Id == null)
+            {
+            
+                return RedirectToAction(nameof(Index));
+            }
+            _db.Authors.Remove(author);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
